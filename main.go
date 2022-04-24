@@ -78,6 +78,7 @@ func main() {
 	router.HandleFunc("/books/delete/{id}", deleteBook).Methods("DELETE")
 	router.HandleFunc("/people/books", postBooks).Methods("POST")
 	router.HandleFunc("/books/{id}", getBook).Methods("GET")
+	router.HandleFunc("/people/change/{id}", changeName).Methods("PUT")
 
 	log.Fatal(http.ListenAndServe(":4000", router))
 
@@ -178,4 +179,17 @@ func deleteBook(w http.ResponseWriter, r *http.Request) {
 	db.Delete(&book)
 
 	json.NewEncoder(w).Encode(&book)
+}
+
+func changeName(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+
+	var person Person
+
+	db.First(&person, params["id"])
+
+	json.NewDecoder(r.Body).Decode(&person)
+
+	db.Model(&person).Update("Name", &person.Name)
+
 }
