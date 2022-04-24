@@ -148,7 +148,7 @@ func postBooks(w http.ResponseWriter, r *http.Request) {
 
 	createdBooks := db.Create(&books)
 	err := createdBooks.Error
-	
+
 	if err != nil {
 		json.NewEncoder(w).Encode(err)
 	} else {
@@ -158,7 +158,7 @@ func postBooks(w http.ResponseWriter, r *http.Request) {
 }
 
 func getBook(w http.ResponseWriter, r *http.Request) {
-	
+
 	params := mux.Vars(r)
 
 	var book Book
